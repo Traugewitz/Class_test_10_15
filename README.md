@@ -1,0 +1,1 @@
+This lesson introduces GitHub, repositories, and working with RStudio. For this assignment, I created a Git repository, linked it to an RStudio Project, and wrote and pushed code to my Git repository.
