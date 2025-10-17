@@ -1,0 +1,80 @@
+---
+title: "Coding_Exercises"
+author: "Tania Raugewitz, MBA, PSM"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("setup.R")
+```
+
+
+```{r}
+data("knz_bison")
+```
+
+```{r}
+view(knz_bison)
+```
+
+1. Create a new column in the bison dataset that calculates the individual’s age at the time of observation.
+```{r}
+names(knz_bison)
+```
+
+
+```{r}
+knz_bison <- knz_bison %>%
+  mutate(b_age_obs = rec_year - animal_yob)
+```
+
+
+```{r}
+view(knz_bison)
+```
+
+  2.Write a function that will first filter the bison dataset based on any user-specified weight threshold (returning the filtered dataset).  
+  
+
+```{r}
+filter_bis_by_weight <- function(data, w_threshold){
+  data %>%
+       filter(animal_weight >= w_threshold)
+}
+```
+
+```{r}
+filter_bis_by_weight(knz_bison, 400)
+```
+
+3. Create a boxplot showing weight distribution between male and female bison, and then conduct a t-test to see if weight is significantly difference between males and females.
+
+```{r}
+ggplot(knz_bison, aes(x = animal_sex, y = animal_weight, fill = animal_sex)) +
+  geom_boxplot() +
+  labs(
+    title = "Weight Distribution of Male and Female Bison",
+    x = "Sex",
+    y = "Weight (kg)"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+names(knz_bison)
+```
+
+3b- t-test:
+**Answer**: The code is below.  I used the Welch two‑sample t‑test to compare the mean weights of male and female bison. The results showed a statistically significant difference in mean weight between sexes (t = 3.98, df = 4642.8, p < 0.001). On average, females weighed about 34 kg more than males (95% CI: 17.3 to 50.8 kg). This suggests that, in this dataset, female bison tend to be heavier than males.
+
+```{r}
+# Two-sample t-test comparing weight by sex
+t_test_result <- t.test(animal_weight ~ animal_sex, data = knz_bison)
+
+# Print the results
+t_test_result
+```
+
